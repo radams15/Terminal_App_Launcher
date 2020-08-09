@@ -50,7 +50,7 @@ void main_window(){
             case 10:
                 if(fork() == 0){
                     run_app(i);
-                    exit(0);
+                    return;
                 }
 
             default: break;

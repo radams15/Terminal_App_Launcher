@@ -3,7 +3,6 @@
 //
 
 #include <string.h>
-#include <stdlib.h>
 
 #define STR_SIZ 128
 

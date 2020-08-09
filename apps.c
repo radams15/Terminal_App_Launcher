@@ -18,7 +18,7 @@ void run_app(int id){
     if(id >= 0 && id < num_apps){
         char* command = calloc(256, sizeof(char));
 
-        sprintf(command, "%s &> /dev/null", apps[id][1]);
+        sprintf(command, "%s > /dev/null 2>&1", apps[id][1]);
 
         //printf("%s\n", command);
         system(command);

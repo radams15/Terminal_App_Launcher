@@ -25,8 +25,6 @@ interface.c
 /mnt/files/scripts/c/Terminal_App_Launcher/interface.c
 
 /mnt/files/scripts/c/Terminal_App_Launcher/parser.c
-malloc.h
--
 string.h
 -
 stdlib.h

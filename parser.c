@@ -2,7 +2,6 @@
 // Created by rhys on 09/08/2020.
 //
 
-#include <malloc.h>
 #include <string.h>
 #include <stdlib.h>
 

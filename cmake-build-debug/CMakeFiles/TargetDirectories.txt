@@ -1,3 +1,0 @@
-/mnt/files/scripts/c/Terminal_App_Launcher/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/mnt/files/scripts/c/Terminal_App_Launcher/cmake-build-debug/CMakeFiles/edit_cache.dir
-/mnt/files/scripts/c/Terminal_App_Launcher/cmake-build-debug/CMakeFiles/Terminal_App_Launcher.dir

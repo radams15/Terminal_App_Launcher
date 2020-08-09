@@ -39,7 +39,7 @@ void free_conf(char*** array){
 
 char** parse_line(char* line){
     char** out = calloc(2, sizeof(char*));
-    out[0] = calloc(STR_SIZ, sizeof(char)); // temporary
+    out[0] = calloc(STR_SIZ, sizeof(char));
     out[1] = calloc(STR_SIZ, sizeof(char));
 
     char* tok;
@@ -52,9 +52,9 @@ char** parse_line(char* line){
     return out;
 }
 
-char*** parse_apps(const char* file){
+void parse_apps(const char* file){
     num_apps = __count_file_lines(file);
-    char*** out = calloc(num_apps, sizeof(char**));
+    apps = calloc(num_apps, sizeof(char**));
 
     FILE * fp;
     char * line = NULL;
@@ -63,7 +63,7 @@ char*** parse_apps(const char* file){
 
     fp = fopen(file, "r");
     if (fp == NULL) {
-        return NULL;
+        return;
     }
 
     for(int i=0 ; i < num_apps ; i++){
@@ -71,7 +71,7 @@ char*** parse_apps(const char* file){
         if(line[read-1] == '\n') {
             line[read - 1] = 0; // remove newline
         }
-        out[i] = parse_line(line);
+        apps[i] = parse_line(line);
     }
 
     if(line){
@@ -79,6 +79,4 @@ char*** parse_apps(const char* file){
     }
 
     fclose(fp);
-
-    return out;
 }

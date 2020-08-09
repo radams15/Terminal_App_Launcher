@@ -8,16 +8,15 @@
 #define CONF_FILE "launcher.conf" // this is in your home directory, eg /home/john/launcher.conf
 
 int main() {
-    char* conf_file = calloc(512, sizeof(char));
-    sprintf(conf_file, "%s/%s", getenv("HOME"), CONF_FILE);
+    char* conf_file = calloc(512, sizeof(char)); // alloc space for the conf file name
+    sprintf(conf_file, "%s/%s", getenv("HOME"), CONF_FILE); // put together the conf file and the home directory
 
-    printf("File: %s", conf_file);
+    parse_apps(conf_file);
+    free(conf_file);
 
-    apps = parse_apps(conf_file);
     main_window();
 
-    free(conf_file);
-    free_conf(apps);
 
+    free_apps();
     return 0;
 }

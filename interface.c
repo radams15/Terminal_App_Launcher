@@ -3,7 +3,6 @@
 //
 
 #include <ncurses.h>
-#include <unistd.h>
 
 #define KEY_ESC 27
 
@@ -44,21 +43,18 @@ void main_window(){
 
             case KEY_DOWN:
                 i++;
-                i = ( i>num_apps ) ? 0 : i;
+                i = ( i>=num_apps ) ? 0 : i;
                 break;
 
             case 10:
-                if(fork() == 0){
-                    run_app(i);
-                    return;
-                }
+                run_app(i);
 
             default: break;
         }
 
-        wattron( w, A_STANDOUT );
+        wattron(w, A_STANDOUT);
         mvwprintw( w, i+1, 2, "%s", apps[i][0]);
-        wattroff( w, A_STANDOUT );
+        wattroff(w, A_STANDOUT);
     }
 
     delwin(w);

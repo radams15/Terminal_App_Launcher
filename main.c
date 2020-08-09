@@ -14,7 +14,8 @@ int main() {
     parse_apps(conf_file);
     free(conf_file);
 
-    main_window();
+    print_apps();
+    //main_window();
 
 
     free_apps();

@@ -4,7 +4,8 @@
 
 #include <string.h>
 
-#define STR_SIZ 128
+#define STR_SIZ 512
+#define DELIMITER ";"
 
 int __count_file_lines(const char* file){
     FILE *fp;
@@ -43,7 +44,7 @@ char** parse_line(char* line){
     out[1] = calloc(STR_SIZ, sizeof(char));
 
     char* tok;
-    tok = strtok(line, " "); // get name
+    tok = strtok(line, DELIMITER); // get name
     strcpy(out[0], tok);
 
     tok = strtok(NULL, ""); // get rest of string, command with extra args

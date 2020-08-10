@@ -50,6 +50,10 @@ char** parse_line(char* line){
     tok = strtok(NULL, ""); // get rest of string, command with extra args
     strcpy(out[1], tok);
 
+    if(strlen(out[0]) > longest_name){
+        longest_name = strlen(out[0]);
+    }
+
     return out;
 }
 

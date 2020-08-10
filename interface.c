@@ -6,6 +6,8 @@
 
 #define KEY_ESC 27
 
+#define BOX_BORDER 1
+
 void main_window(){
     WINDOW *w;
     int i;
@@ -13,7 +15,7 @@ void main_window(){
 
     initscr();
 
-    w = newwin(10, 12, 1, 1);
+    w = newwin(num_apps+2, longest_name+3, BOX_BORDER, BOX_BORDER);
     box(w, 0, 0);
 
     for(i=0 ; i<num_apps ; i++){
@@ -32,18 +34,17 @@ void main_window(){
 
     while(( ch = wgetch(w)) != KEY_ESC){
 
-        // right pad with spaces to make the items appear with even width.
         mvwprintw( w, i+1, 2, "%s", apps[i][0] );
-        // use a variable to increment or decrement the value based on the input.
+
         switch( ch ) {
             case KEY_UP:
                 i--;
-                i = ( i<0 ) ? num_apps-1 : i;
+                i = i<0 ? num_apps-1 : i;
                 break;
 
             case KEY_DOWN:
                 i++;
-                i = ( i>=num_apps ) ? 0 : i;
+                i = i>=num_apps ? 0 : i;
                 break;
 
             case 10:

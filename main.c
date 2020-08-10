@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #include "apps.c"
-
 #include "interface.c"
 
 #define CONF_FILE "launcher.conf" // this is in your home directory, eg /home/john/launcher.conf

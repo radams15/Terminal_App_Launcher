@@ -6,6 +6,7 @@
 
 char*** apps;
 int num_apps;
+int longest_name;
 
 #define COMMAND_SIZ 512
 

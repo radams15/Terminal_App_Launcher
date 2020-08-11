@@ -15,7 +15,7 @@ void main_window(){
 
     initscr();
 
-    w = newwin(num_apps+2, longest_name+3, BOX_BORDER, BOX_BORDER);
+    w = newwin(num_apps+2, longest_name+3, BOX_BORDER, BOX_BORDER); // make the box with the same height as apps and the same width as the largest app
     box(w, 0, 0);
 
     for(i=0 ; i<num_apps ; i++){

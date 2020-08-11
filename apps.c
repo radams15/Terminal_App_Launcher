@@ -4,37 +4,35 @@
 
 #include <unistd.h>
 
+#define COMMAND_SIZ 512
+
 char*** apps;
 int num_apps;
 int longest_name;
 
-#define COMMAND_SIZ 512
-
-#include "parser.c"
-
-void print_apps(){
-    for(int i=0 ; i<num_apps ; i++){
-        printf("%i: ", i);
-        printf("%s => %s\n", apps[i][0], apps[i][1]);
-    }
-}
 
 void free_apps(){
-    free_conf(apps);
+    for(int i=0 ; i<num_apps ; i++){ // iterate over the top char***
+        for(int x=0 ; x<sizeof(apps[i])/sizeof(char*) ; x++){ // iterate over the char**
+            free(apps[i][x]); // free the char*
+        }
+        free(apps[i]); // free the char** container
+    }
+    free(apps); // free the char*** container
 }
 
 void run_app(int id){
     if(id >= 0 && id < num_apps){
-        if(fork() == 0) {
+        if(fork() == 0) { // fork into new process
             char *command = calloc(COMMAND_SIZ, sizeof(char));
+            sprintf(command, "%s > $HOME/%s_log.txt 2>&1", apps[id][1], apps[id][0]); // append to the command to make it silent
+            //printf("%s\n", command);
 
-            sprintf(command, "%s > /dev/null 2>&1", apps[id][1]); // append to the command to make it silent
+            system(command); //run the command!
 
-            system(command);
+            free(command); // free the command char*
 
-            free(command);
-
-            free_apps();
+            free_apps(); // free the apps array as we are in a forked process, we need to clean up here as well
 
             exit(0);
 
@@ -42,3 +40,5 @@ void run_app(int id){
 
     }
 }
+
+#include "parser.c"

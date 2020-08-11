@@ -3,6 +3,7 @@
 //
 
 #include <string.h>
+#include <ctype.h>
 
 #define STR_SIZ 512
 #define DELIMITER ";"
@@ -28,14 +29,9 @@ int __count_file_lines(const char* file){
     return count;
 }
 
-void free_conf(char*** array){
-    for(int i=0 ; i<num_apps ; i++){
-        for(int x=0 ; x<sizeof(array[i])/sizeof(char*) ; x++){
-            free(array[i][x]);
-        }
-        free(array[i]);
-    }
-    free(array);
+char* to_lower(char* s) {
+    for(char *p=s; *p; p++) *p=tolower(*p);
+    return s;
 }
 
 char** parse_line(char* line){

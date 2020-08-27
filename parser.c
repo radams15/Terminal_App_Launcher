@@ -4,6 +4,7 @@
 
 #include <string.h>
 #include <ctype.h>
+#include <sys/stat.h>
 
 #define STR_SIZ 512
 #define DELIMITER ";"
@@ -29,6 +30,11 @@ int __count_file_lines(const char* file){
     return count;
 }
 
+int file_exists(const char* path){
+    struct stat buffer;
+    return stat (path, &buffer) == 0;
+}
+
 char* to_lower(char* s) {
     for(char *p=s; *p; p++) *p=tolower(*p);
     return s;
@@ -52,6 +58,18 @@ char** parse_line(char* line){
 
     return out;
 }
+
+void init_file(const char* path, const char* def){
+    if(!file_exists(path)){
+        FILE* fp;
+        fp = fopen(path, "w");
+        if(def != NULL){
+            fprintf(fp, "%s\n", def);
+        }
+        fclose(fp);
+    }
+}
+
 
 void parse_apps(const char* file){
     num_apps = __count_file_lines(file);

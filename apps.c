@@ -25,7 +25,7 @@ void run_app(int id){
     if(id >= 0 && id < num_apps){
         if(fork() == 0) { // fork into new process
             char *command = calloc(COMMAND_SIZ, sizeof(char));
-            sprintf(command, "mkdir -p \"$HOME/launcher_logs\" ; \"%s\" > \"$HOME/launcher_logs/%s_log.txt\" 2>&1", apps[id][1], apps[id][0]); // append to the command to make it silent
+            sprintf(command, "mkdir -p \"$HOME/launcher_logs\" ; %s > \"$HOME/launcher_logs/%s_log.txt\" 2>&1", apps[id][1], apps[id][0]); // append to the command to make it silent
             //printf("%s\n", command);
 
             system(command); //run the command!

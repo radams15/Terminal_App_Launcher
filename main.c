@@ -31,20 +31,33 @@ int main(int argc, char** argv) {
 
     if(argc > 1){ // if there are command line args
         char* to_launch = argv[1];
-        for(int i=0 ; i<num_apps ; i++){ // iterate through the apps to check if any of the names are equal to the input (both lowercased)
-            if(strcmp(to_lower(apps[i][0]), to_lower(to_launch)) == 0) {
-                const char* args;
-                if(argc > 2){ // if more args than just the name
-                    args = concat_args(argc-2, &argv[2]); // collect the args together
-                }else{
-                    args = ""; // otherwise no args
-                }
 
-                run_app(i, args); // run the app in the seperate thread
+        if(strcmp(to_launch, "apps") == 0){
+            for(int i=0 ; i<num_apps ; i++){
+                printf("%s\n", apps[i][0]);
+            }
+        }else {
+            int found = FALSE;
+            for (int i = 0; i < num_apps; i++) { // iterate through the apps to check if any of the names are equal to the input (both lowercased)
+                if (strcmp(to_lower(apps[i][0]), to_lower(to_launch)) == 0) {
+                    const char *args;
+                    if (argc > 2) { // if more args than just the name
+                        args = concat_args(argc - 2, &argv[2]); // collect the args together
+                    } else {
+                        args = ""; // otherwise no args
+                    }
 
-                if(argc > 2){ // if memory is allocated
-                    free((void*) args); // free it
+                    run_app(i, args); // run the app in the seperate thread
+
+                    if (argc > 2) { // if memory is allocated
+                        free((void *) args); // free it
+                    }
+
+                    found = TRUE;
                 }
+            }
+            if(!found){
+                printf("No App Named %s\n", to_launch);
             }
         }
     }else{

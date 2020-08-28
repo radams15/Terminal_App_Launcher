@@ -9,4 +9,7 @@ include_directories(${CURSES_INCLUDE_DIR})
 add_executable(launcher main.c)
 target_link_libraries(launcher ${CURSES_LIBRARIES})
 
-install(TARGETS launcher)
+install(
+        TARGETS launcher
+        RUNTIME DESTINATION /usr/local/bin
+)

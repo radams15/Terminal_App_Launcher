@@ -48,7 +48,7 @@ void main_window(){
                 break;
 
             case 10:
-                run_app(i);
+                run_app(i, "");
 
             default: break;
         }

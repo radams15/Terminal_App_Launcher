@@ -33,7 +33,7 @@ void add_apps(GtkWidget* window){
                 g_signal_connect(button, "clicked", G_CALLBACK(button_callback),
                                  GINT_TO_POINTER(i)); // set the callback, passing the app id
 
-                gtk_grid_attach(GTK_GRID(grid), button, i, j, 1, 1);
+                gtk_grid_attach(GTK_GRID(grid), button, j, i, 1, 1);
 
                 printf("Adding %d to (%d, %d)\n", app, i, j);
 

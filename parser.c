@@ -60,12 +60,12 @@ char** parse_line(char* line){
 }
 
 void init_file(const char* path, const char* def){
-    system("mkdir -p \"$HOME/launcher_logs\"");
-    if(!file_exists(path)){
-        FILE* fp;
+    system("mkdir -p \"$HOME/launcher_logs\""); // make the logs directory
+    if(!file_exists(path)){ // if file does not exist
+        FILE* fp; // make the file
         fp = fopen(path, "w");
-        if(def != NULL){
-            fprintf(fp, "%s\n", def);
+        if(def != NULL){ // if there is a default content set
+            fprintf(fp, "%s\n", def); // write the default data
         }
         fclose(fp);
     }
@@ -73,8 +73,8 @@ void init_file(const char* path, const char* def){
 
 
 void parse_apps(const char* file){
-    num_apps = __count_file_lines(file);
-    apps = calloc(num_apps, sizeof(char**));
+    num_apps = __count_file_lines(file); // count the lines in the file
+    apps = calloc(num_apps, sizeof(char**)); // allocate the apps array for all the file lines
 
     FILE * fp;
     char * line = NULL;
@@ -82,20 +82,20 @@ void parse_apps(const char* file){
     ssize_t read;
 
     fp = fopen(file, "r");
-    if (fp == NULL) {
-        return;
+    if (fp == NULL) { // file does not exist
+        return; // fail
     }
 
     for(int i=0 ; i < num_apps ; i++){
-        read = getline(&line, &len, fp);
+        read = getline(&line, &len, fp); // read the line
         if(line[read-1] == '\n') {
             line[read - 1] = 0; // remove newline
         }
-        apps[i] = parse_line(line);
+        apps[i] = parse_line(line); // parse the line and assign to the array
     }
 
     if(line){
-        free(line);
+        free(line); // free the array
     }
 
     fclose(fp);

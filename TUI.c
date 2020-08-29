@@ -8,7 +8,7 @@
 
 #define BOX_BORDER 1
 
-void main_window(){
+void tui_main(){
     WINDOW *w;
     int i;
     int ch;

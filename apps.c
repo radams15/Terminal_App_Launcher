@@ -23,7 +23,7 @@ void free_apps(){
 }
 
 const char* mk_command_args(int id, const char* args){
-    const char* template = "mkdir -p \"$HOME/launcher_logs\" ; %s %s > \"$HOME/launcher_logs/%s_log.txt\" 2>&1";
+    const char* template = "%s %s > \"$HOME/launcher_logs/%s_log.txt\" 2>&1";
     unsigned long command_size = strlen(template)-4 + strlen(apps[id][0]) + strlen(apps[id][1]) + strlen(args);
     char *command = calloc(command_size, sizeof(char));
     sprintf(command, template, apps[id][1], args, apps[id][0]); // append to the command to make it silent

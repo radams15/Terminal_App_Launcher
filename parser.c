@@ -60,6 +60,7 @@ char** parse_line(char* line){
 }
 
 void init_file(const char* path, const char* def){
+    system("mkdir -p \"$HOME/launcher_logs\"");
     if(!file_exists(path)){
         FILE* fp;
         fp = fopen(path, "w");

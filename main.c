@@ -2,7 +2,8 @@
 #include <stdlib.h>
 
 #include "apps.c"
-#include "interface.c"
+#include "TUI.c"
+#include "GUI.c"
 
 #define CONF_FILE "launcher.conf" // this is in your home directory, eg /home/john/launcher.conf
 
@@ -30,41 +31,45 @@ int main(int argc, char** argv) {
     parse_apps(conf_file);
 
     if(argc > 1){ // if there are command line args
-        char* to_launch = argv[1];
+        char* arg_1 = argv[1];
 
-        if(strcmp(to_launch, "apps") == 0){
+        if(strcmp(arg_1, "apps") == 0){
             for(int i=0 ; i<num_apps ; i++){
                 printf("%s\n", apps[i][0]);
             }
         }else {
-            int found = FALSE;
-            for (int i = 0; i < num_apps; i++) { // iterate through the apps to check if any of the names are equal to the input (both lowercased)
-                if (strcmp(to_lower(apps[i][0]), to_lower(to_launch)) == 0) {
-                    const char *args;
-                    if (argc > 2) { // if more args than just the name
-                        args = concat_args(argc - 2, &argv[2]); // collect the args together
-                    } else {
-                        args = ""; // otherwise no args
+            if (strcmp(to_lower(arg_1), "tui") == 0) {
+                tui_main();
+            }else {
+                int found = FALSE;
+                for (int i = 0; i < num_apps; i++) { // iterate through the apps to check if any of the names are equal to the input (both lowercased)
+                    if (strcmp(to_lower(apps[i][0]), to_lower(arg_1)) == 0) {
+                        const char *args;
+                        if (argc > 2) { // if more args than just the name
+                            args = concat_args(argc - 2, &argv[2]); // collect the args together
+                        } else {
+                            args = ""; // otherwise no args
+                        }
+
+                        run_app(i, args); // run the app in the seperate thread
+
+                        if (argc > 2) { // if memory is allocated
+                            free((void *) args); // free it
+                        }
+
+                        found = TRUE;
                     }
-
-                    run_app(i, args); // run the app in the seperate thread
-
-                    if (argc > 2) { // if memory is allocated
-                        free((void *) args); // free it
-                    }
-
-                    found = TRUE;
+                }
+                if (!found) {
+                    printf("No App Named %s\n", arg_1);
                 }
             }
-            if(!found){
-                printf("No App Named %s\n", to_launch);
-            }
         }
-    }else{
+    }else{ // no args
         if(num_apps > 0){
-            main_window(); // if no args, launch the curses TUI
+            gui_main(); // has apps, run gui
         }else{
-            printf("Please Add Programs To The File [%s]\n", conf_file);
+            printf("Please Add Programs To The File [%s]\n", conf_file); // tell the user there are no apps, and where to put them
         }
     }
 

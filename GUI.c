@@ -30,8 +30,7 @@ void add_apps(GtkWidget* window){
         for(unsigned int j=0 ; j < TABLE_ROWS ; j++) {
             if(app < num_apps) {
                 GtkWidget *button = gtk_button_new_with_label(apps[app][0]);
-                g_signal_connect(button, "clicked", G_CALLBACK(button_callback),
-                                 GINT_TO_POINTER(i)); // set the callback, passing the app id
+                g_signal_connect(button, "clicked", G_CALLBACK(button_callback), GINT_TO_POINTER(app)); // set the callback, passing the app id
 
                 gtk_grid_attach(GTK_GRID(grid), button, j, i, 1, 1);
 

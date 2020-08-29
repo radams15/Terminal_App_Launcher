@@ -20,10 +20,10 @@ void button_callback(GtkWidget *widget, gpointer data){
 void add_apps(GtkWidget* window){
     int cols = ceil((double)num_apps / (double)TABLE_ROWS);
 
-    printf("Need %d cols and %d cols\n", cols, TABLE_ROWS);
+    GtkWidget* grid = gtk_grid_new();
 
-    GtkWidget* table = gtk_table_new(cols, TABLE_ROWS, TRUE);
-
+    gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE);
+    gtk_grid_set_column_homogeneous(GTK_GRID(grid), TRUE);
 
     int app=0;
     for(unsigned int i=0 ; i<num_apps ; i++){
@@ -33,16 +33,16 @@ void add_apps(GtkWidget* window){
                 g_signal_connect(button, "clicked", G_CALLBACK(button_callback),
                                  GINT_TO_POINTER(i)); // set the callback, passing the app id
 
-                gtk_table_attach_defaults(GTK_TABLE(table), button, j, j + 1, i, i + 1);
+                gtk_grid_attach(GTK_GRID(grid), button, i, j, 1, 1);
 
-                printf("Adding %d to (%d, %d)\n", app, j, i);
+                printf("Adding %d to (%d, %d)\n", app, i, j);
 
                 app++;
             }
         }
     }
 
-    gtk_container_add(GTK_CONTAINER(window), table);
+    gtk_container_add(GTK_CONTAINER(window), grid);
 }
 
 void gui_activate(GtkApplication* app, gpointer user_data){

@@ -14,7 +14,7 @@ link_directories(${GTK3_LIBRARY_DIRS})
 add_definitions(${GTK3_CFLAGS_OTHER})
 
 add_executable(launcher main.c)
-target_link_libraries(launcher ${CURSES_LIBRARIES} ${GTK3_LIBRARIES})
+target_link_libraries(launcher ${CURSES_LIBRARIES} ${GTK3_LIBRARIES} m)
 
 install(
         TARGETS launcher

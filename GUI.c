@@ -3,9 +3,12 @@
 //
 
 #include <gtk/gtk.h>
+#include <math.h>
 
 #define NAME "org.rhys.launcher"
 #define WINDOW_NAME "Launcher"
+
+#define TABLE_ROWS 2
 
 #define DEFAULT_SIZE 200, 200
 
@@ -15,14 +18,31 @@ void button_callback(GtkWidget *widget, gpointer data){
 }
 
 void add_apps(GtkWidget* window){
-    GtkWidget* button_box = gtk_button_box_new (GTK_ORIENTATION_VERTICAL); // create a button box
-    gtk_container_add (GTK_CONTAINER (window), button_box);
+    int cols = ceil((double)num_apps / (double)TABLE_ROWS);
 
+    printf("Need %d cols and %d cols\n", cols, TABLE_ROWS);
+
+    GtkWidget* table = gtk_table_new(cols, TABLE_ROWS, TRUE);
+
+
+    int app=0;
     for(unsigned int i=0 ; i<num_apps ; i++){
-        GtkWidget* button = gtk_button_new_with_label(apps[i][0]);
-        g_signal_connect(button, "clicked", G_CALLBACK (button_callback), GINT_TO_POINTER(i)); // set the callback, passing the app id
-        gtk_container_add(GTK_CONTAINER(button_box), button); // add it to the window
+        for(unsigned int j=0 ; j < TABLE_ROWS ; j++) {
+            if(app < num_apps) {
+                GtkWidget *button = gtk_button_new_with_label(apps[app][0]);
+                g_signal_connect(button, "clicked", G_CALLBACK(button_callback),
+                                 GINT_TO_POINTER(i)); // set the callback, passing the app id
+
+                gtk_table_attach_defaults(GTK_TABLE(table), button, j, j + 1, i, i + 1);
+
+                printf("Adding %d to (%d, %d)\n", app, j, i);
+
+                app++;
+            }
+        }
     }
+
+    gtk_container_add(GTK_CONTAINER(window), table);
 }
 
 void gui_activate(GtkApplication* app, gpointer user_data){

@@ -38,8 +38,8 @@ int main(int argc, char** argv) {
                 printf("%s\n", apps[i][0]);
             }
         }else {
-            if (strcmp(to_lower(arg_1), "tui") == 0) {
-                tui_main();
+            if (strcmp(to_lower(arg_1), "gui") == 0) { // wants a gtk gui
+                gui_main();
             }else {
                 int found = FALSE;
                 for (int i = 0; i < num_apps; i++) { // iterate through the apps to check if any of the names are equal to the input (both lowercased)
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
         }
     }else{ // no args
         if(num_apps > 0){
-            gui_main(); // has apps, run gui
+            tui_main(); // has apps, run TUI
         }else{
             printf("Please Add Programs To The File [%s]\n", conf_file); // tell the user there are no apps, and where to put them
         }

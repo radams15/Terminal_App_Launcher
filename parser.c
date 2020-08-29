@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 
 #define STR_SIZ 512
-#define DELIMITER ";"
+#define DELIMITER ":"
 
 int __count_file_lines(const char* file){
     FILE *fp;

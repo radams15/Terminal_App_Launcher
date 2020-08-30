@@ -23,10 +23,10 @@ void add_apps(GtkWidget* window){
     gtk_grid_set_column_homogeneous(GTK_GRID(grid), TRUE);
 
     int app_id=0;
-    for(unsigned int cols=0 ; cols < num_apps ; cols++){
+    for(unsigned int cols=0 ; cols < apps.num ; cols++){
         for(unsigned int rows=0 ; rows < TABLE_ROWS ; rows++) {
-            if(app_id < num_apps) { // don't want to go over the amount of app_array we have, as it is possible if the number of app_array is not divisible by TABLE_ROWS
-                GtkWidget *button = gtk_button_new_with_label(app_array[app_id][0]);
+            if(app_id < apps.num) { // don't want to go over the amount of app_array we have, as it is possible if the number of app_array is not divisible by TABLE_ROWS
+                GtkWidget *button = gtk_button_new_with_label(apps.list[app_id][0]);
                 g_signal_connect(button, "clicked", G_CALLBACK(button_callback), GINT_TO_POINTER(app_id)); // set the callback, passing the app_id id
 
                 gtk_grid_attach(GTK_GRID(grid), button, rows, cols, 1, 1); // add the button to the grid, at (rows, cols), at size (1,1)

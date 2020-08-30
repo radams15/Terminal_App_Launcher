@@ -5,32 +5,34 @@
 #include <unistd.h>
 #include <string.h>
 
-char*** app_array;
-int num_apps;
-int longest_name;
-
+struct Apps{
+    char*** list;
+    int num;
+    int longest;
+};
+struct Apps apps;
 
 void free_apps(){
-    for(int i=0 ; i<num_apps ; i++){ // iterate over the top char***
-        free(app_array[i]); // free the char** container
+    for(int i=0 ; i<apps.num ; i++){ // iterate over the top char***
+        free(apps.list[i]); // free the char** container
     }
-    free(app_array); // free the char*** container
+    free(apps.list); // free the char*** container
 }
 
 const char* mk_command_args(int id, const char* args){
     const char* template = "%s %s > \"$HOME/launcher_logs/%s_log.txt\" 2>&1";
 
-    unsigned long command_size = strlen(template) - 6 + strlen(app_array[id][0]) + strlen(app_array[id][1]) + strlen(args); // calculate the size of string needed.
+    unsigned long command_size = strlen(template) - 6 + strlen(apps.list[id][0]) + strlen(apps.list[id][1]) + strlen(args); // calculate the size of string needed.
     //The size of all the parts subtracting the size of the formatting characters
 
     char *command = calloc(command_size, sizeof(char));
-    sprintf(command, template, app_array[id][1], args, app_array[id][0]); // append to the command to make it silent
+    sprintf(command, template, apps.list[id][1], args, apps.list[id][0]); // append to the command to make it silent
 
     return command;
 }
 
 void run_app(int id, const char* args){
-    if(id >= 0 && id < num_apps){
+    if(id >= 0 && id < apps.num){
         if(fork() == 0) { // fork into new process
             const char *command = mk_command_args(id, args); // make the command
 

@@ -6,8 +6,8 @@
 #include <ctype.h>
 #include <sys/stat.h>
 
-#define STR_SIZ 512
 #define DELIMITER ":"
+#define MAX_APPS 32
 
 int __count_file_lines(const char* file){
     FILE *fp;
@@ -52,8 +52,8 @@ char** parse_line(char* line){
     out[1] = calloc(strlen(tok), sizeof(char));
     strcpy(out[1], tok);
 
-    if(strlen(out[0]) > longest_name){
-        longest_name = (int) strlen(out[0]); // keep the largest display name so that the curses display can be just long enough
+    if(strlen(out[0]) > apps.longest){
+        apps.longest = (int) strlen(out[0]); // keep the largest display name so that the curses display can be just long enough
     }
 
     return out;
@@ -73,8 +73,8 @@ void init_file(const char* path, const char* def){
 
 
 struct Apps parse_apps(const char* file){
-    num_apps = __count_file_lines(file); // count the lines in the file
-    app_array = calloc(num_apps, sizeof(char**)); // allocate the app_array array for all the file lines
+    apps.num = __count_file_lines(file); // count the lines in the file
+    apps.list = calloc(apps.num, sizeof(char**)); // allocate the app_array array for all the file lines
 
     FILE * fp;
     char * line = NULL;
@@ -83,15 +83,15 @@ struct Apps parse_apps(const char* file){
 
     fp = fopen(file, "r");
     if (fp == NULL) { // file does not exist
-        return; // fail
+        exit(1); // fail
     }
 
-    for(int i=0 ; i < num_apps ; i++){
+    for(int i=0 ; i < apps.num ; i++){
         read = getline(&line, &len, fp); // read the line
         if(line[read-1] == '\n') {
             line[read - 1] = 0; // remove newline
         }
-        app_array[i] = parse_line(line); // parse the line and assign to the array
+        apps.list[i] = parse_line(line); // parse the line and assign to the array
     }
 
     if(line){

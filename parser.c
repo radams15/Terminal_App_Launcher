@@ -7,28 +7,7 @@
 #include <sys/stat.h>
 
 #define DELIMITER ":"
-#define MAX_APPS 32
-
-int __count_file_lines(const char* file){
-    FILE *fp;
-    int count = 0;
-    int chr;
-
-    fp = fopen(file, "r");
-
-    if (fp == NULL){
-        return -1;
-    }
-
-    for (chr = getc(fp); chr != EOF; chr = getc(fp)) {
-        if (chr == '\n') {
-            count++;
-        }
-    }
-
-    fclose(fp);
-    return count;
-}
+#define MAX_FILE_LEN 64
 
 int file_exists(const char* path){
     struct stat buffer;
@@ -73,30 +52,53 @@ void init_file(const char* path, const char* def){
 
 
 struct Apps parse_apps(const char* file){
-    apps.num = __count_file_lines(file); // count the lines in the file
-    apps.list = calloc(apps.num, sizeof(char**)); // allocate the app_array array for all the file lines
+    char*** large_list = calloc(MAX_FILE_LEN, sizeof(char**)); // allocate a large array array, for at least MAX_LINES lines of config file.
 
     FILE * fp;
+
     char * line = NULL;
-    size_t len = 0;
-    ssize_t read;
+    size_t len = 0; // length of data
+    ssize_t read; // length of data, -1 if no data (fail to read, e.g if file read finished)
 
     fp = fopen(file, "r");
     if (fp == NULL) { // file does not exist
         exit(1); // fail
     }
 
-    for(int i=0 ; i < apps.num ; i++){
+    apps.num = 0;
+
+    for(int i=0 ; i < MAX_FILE_LEN ; i++){
         read = getline(&line, &len, fp); // read the line
-        if(line[read-1] == '\n') {
+        if(read == -1) { // no more data to read
+            break; // end the iteration
+        }
+        if(line[0] == '\n' || line[0] == '#') { // if line empty or just commented, ignore the line
+            continue;
+        }
+
+        if (line[read - 1] == '\n') {
             line[read - 1] = 0; // remove newline
         }
-        apps.list[i] = parse_line(line); // parse the line and assign to the array
+
+        large_list[apps.num] = parse_line(line); // parse the line and assign to the array
+        apps.num++;
     }
+
+
 
     if(line){
         free(line); // free the array
     }
 
+    apps.list = calloc(apps.num, sizeof(char**)); // allocate an appropriately sized array
+
+    for(int i=0 ; i<apps.num ; i++){
+        apps.list[i] = large_list[i]; // assign each of the actual apps to the new array
+    }
+
+    free(large_list); // free the large array
+
     fclose(fp);
+
+    return apps;
 }

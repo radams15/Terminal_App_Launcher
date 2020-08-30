@@ -3,12 +3,12 @@
 ### Building
 This depends on:
 ncurses and gtk3 (both dev versions)
-#####Ubuntu (And Debian Probably):
+##### Ubuntu (And Debian Probably):
     sudo apt install libncurses-dev libgtk-3-dev
-#####Fedora / RHEL / Centos
+##### Fedora / RHEL / Centos
     sudo dnf install ncurses-devel gtk3-devel
 
-#####Compilation
+##### Compilation
     mkdir build
     cd build
     cmake ..

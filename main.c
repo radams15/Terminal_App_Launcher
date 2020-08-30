@@ -24,8 +24,9 @@ const char* concat_args(int argc, char** argv){
 }
 
 int main(int argc, char** argv) {
-    char* conf_file = calloc(512, sizeof(char)); // alloc space for the conf file name
-    sprintf(conf_file, "%s/%s", getenv("HOME"), CONF_FILE); // put together the conf file and the home directory
+    char* home = getenv("HOME");
+    char* conf_file = calloc(strlen(home)+strlen(CONF_FILE)+1, sizeof(char)); // alloc space for the conf file name (size of strings plus 1 for the '/')
+    sprintf(conf_file, "%s/%s", home, CONF_FILE); // put together the conf file and the home directory
 
     init_file(conf_file, NULL); // init file if none exists with no content
     parse_apps(conf_file);
@@ -33,17 +34,17 @@ int main(int argc, char** argv) {
     if(argc > 1){ // if there are command line args
         char* arg_1 = argv[1];
 
-        if(strcmp(arg_1, "apps") == 0){
+        if(strcmp(arg_1, "app_array") == 0){
             for(int i=0 ; i<num_apps ; i++){
-                printf("%s\n", apps[i][0]);
+                printf("%s\n", app_array[i][0]);
             }
         }else {
             if (strcmp(to_lower(arg_1), "gui") == 0) { // wants a gtk gui
                 gui_main();
             }else {
                 int found = FALSE;
-                for (int i = 0; i < num_apps; i++) { // iterate through the apps to check if any of the names are equal to the input (both lowercased)
-                    if (strcmp(to_lower(apps[i][0]), to_lower(arg_1)) == 0) {
+                for (int i = 0; i < num_apps; i++) { // iterate through the app_array to check if any of the names are equal to the input (both lowercased)
+                    if (strcmp(to_lower(app_array[i][0]), to_lower(arg_1)) == 0) {
                         const char *args;
                         if (argc > 2) { // if more args than just the name
                             args = concat_args(argc - 2, &argv[2]); // collect the args together
@@ -67,15 +68,15 @@ int main(int argc, char** argv) {
         }
     }else{ // no args
         if(num_apps > 0){
-            tui_main(); // has apps, run TUI
+            tui_main(); // has app_array, run TUI
         }else{
-            printf("Please Add Programs To The File [%s]\n", conf_file); // tell the user there are no apps, and where to put them
+            printf("Please Add Programs To The File [%s]\n", conf_file); // tell the user there are no app_array, and where to put them
         }
     }
 
 
     free(conf_file); // free up memory from the conf file
-    free_apps(); // free the apps array
+    free_apps(); // free the app_array array
 
     return 0;
 }

@@ -42,18 +42,18 @@ char* to_lower(char* s) {
 
 char** parse_line(char* line){
     char** out = calloc(2, sizeof(char*));
-    out[0] = calloc(STR_SIZ, sizeof(char));
-    out[1] = calloc(STR_SIZ, sizeof(char));
 
     char* tok;
     tok = strtok(line, DELIMITER); // get name
+    out[0] = calloc(strlen(tok), sizeof(char));
     strcpy(out[0], tok);
 
     tok = strtok(NULL, ""); // get rest of string, command with extra args
+    out[1] = calloc(strlen(tok), sizeof(char));
     strcpy(out[1], tok);
 
     if(strlen(out[0]) > longest_name){
-        longest_name = strlen(out[0]);
+        longest_name = (int) strlen(out[0]); // keep the largest display name so that the curses display can be just long enough
     }
 
     return out;
@@ -72,9 +72,9 @@ void init_file(const char* path, const char* def){
 }
 
 
-void parse_apps(const char* file){
+struct Apps parse_apps(const char* file){
     num_apps = __count_file_lines(file); // count the lines in the file
-    apps = calloc(num_apps, sizeof(char**)); // allocate the apps array for all the file lines
+    app_array = calloc(num_apps, sizeof(char**)); // allocate the app_array array for all the file lines
 
     FILE * fp;
     char * line = NULL;
@@ -91,7 +91,7 @@ void parse_apps(const char* file){
         if(line[read-1] == '\n') {
             line[read - 1] = 0; // remove newline
         }
-        apps[i] = parse_line(line); // parse the line and assign to the array
+        app_array[i] = parse_line(line); // parse the line and assign to the array
     }
 
     if(line){

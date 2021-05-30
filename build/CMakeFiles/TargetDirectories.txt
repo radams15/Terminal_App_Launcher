@@ -1,0 +1,7 @@
+/home/rhys/scripts/c/Terminal_App_Launcher/build/CMakeFiles/install/strip.dir
+/home/rhys/scripts/c/Terminal_App_Launcher/build/CMakeFiles/install.dir
+/home/rhys/scripts/c/Terminal_App_Launcher/build/CMakeFiles/list_install_components.dir
+/home/rhys/scripts/c/Terminal_App_Launcher/build/CMakeFiles/rebuild_cache.dir
+/home/rhys/scripts/c/Terminal_App_Launcher/build/CMakeFiles/edit_cache.dir
+/home/rhys/scripts/c/Terminal_App_Launcher/build/CMakeFiles/install/local.dir
+/home/rhys/scripts/c/Terminal_App_Launcher/build/CMakeFiles/launcher.dir
